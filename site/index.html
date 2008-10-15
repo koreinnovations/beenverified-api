@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>BeenVerified API Library</title>
+<style type="text/css">
+/*
+
+Default style sheet for commands that output HTML.  Please use this (and customize
+locally if needed) for all commands, as it will help provide a unified look.
+Changes to this document should be coordinated (with me, for instance :-p).
+
+Most css was originally derived and adapted from the Objective-C bundle.
+The color scheme is gray-ish.
+
+If someone disagrees with the look.. well.. I'm no designer, so let's talk about it
+then :-). Especially applies to the authors of the Objective-C bundle from which I
+derived much.
+
+By Sune Foldager.
+Version 1, 2005-05-20.
+
+*/
+
+
+/* General formatting. */
+
+body {
+   font-family: "Lucida Grande", sans-serif;
+   font-size: 11pt;
+}
+
+h1 {
+   font-size: 16pt;
+   text-shadow: #ddd 2px 3px 3px;
+}
+h2 {
+   font-size: 14pt;
+   
+}
+
+
+hr {
+	color: #bbb;
+   margin: 2px;
+   margin-top: 6px;
+   margin-bottom: 6px;
+	background-color: #bbb;
+	height: 1px;
+	border: 0px;
+}
+
+pre, code, tt {
+   font-family: "Bitstream Vera Sans Mono", "Monaco", monospace;
+   font-size: medium;
+}
+
+/** The “pro” table look (used in Apple’s documentation)
+
+	Example:
+
+		<table class="graybox" cellspacing="0" cellpadding="5">
+			<tr>
+				<th>First</th>
+				<th>Last</th>
+			</tr>
+
+			<tr>
+				<td><p>Allan</p></td>
+				<td><p>Odgaard</p></td>
+			</tr>
+		</table>
+
+**/
+
+.graybox {
+	border-top: 1px solid #919699;
+	border-left: 1px solid #919699;
+}
+.graybox th {
+	background: #E2E2E2;
+	border-bottom: 1px solid #919699;
+	border-right: 1px solid #919699;
+	font-weight: bold;
+	padding: 4px 8px 4px 8px;
+}
+.graybox td {
+	border-bottom: 1px solid #919699;
+	border-right: 1px solid #919699;
+	padding: 4px;
+	vertical-align: top;
+}
+.graybox p {
+	margin: 0;
+}
+.graybox p + p {
+	margin-top: 1em;
+}
+
+/* Sidebars and boxes. */
+
+div.sideBar {
+   display: block;
+   position: relative;
+   border-left: 2px solid #888;
+   background: #eee;
+   color: #888;
+   padding: 2px;
+   margin: 3px;
+   font-size: 10pt;
+}
+
+div.sideBar strong {
+   color: #555;
+}
+
+div.box {
+   display: block;
+   position: relative;
+   border: 2px solid #888;
+   background: #eee;
+   color: #888;
+   padding: 2px;
+   margin: 3px;
+   font-size: 10pt;
+}
+
+div.box strong {
+   color: #555;
+}
+
+.toggle {
+   position: absolute;
+   color: #00a;
+   top: 0px;
+   right: 8px;
+   font-size: 8pt;
+   margin: 0px;
+   margin-top: 2px;
+   margin-bottom: 2px;
+}
+
+.sideBar .toggle {
+   right: 10px;
+}
+
+.toggle :link, .toggle :visited {
+   color: #00a;
+   font-size: 8pt;
+}
+
+.toggle :active {
+   color: #e00;
+}
+
+.sideBar .details, .box .details {
+   font-size: 9pt;
+}
+
+.warning {
+    color: orange;
+}
+
+.error {
+    color: red;
+}
+
+/* a */
+td.added {
+   color: green;
+   background-color: #bbffb3;	
+}
+
+/* M */
+td.modified {
+	color: #eb6400;
+	background-color: #f7e1ad;
+}
+
+/* D */
+td.deleted {
+	color: red;
+	background-color: #f59696;
+}
+
+/* C, !, " */
+td.conflict, td.missing, td.typeconflict {
+	color: teal;
+	background-color: #A3CED0;
+}
+
+/* ?, I, X */
+td.unknown, td.ignore, td.external {
+	color: purple;
+	background-color: #edaef5;
+}
+
+div.bibtex {
+    background-color: #EBD3DF;
+}
+
+div.mkindex {
+    background-color: #C9EDCC;
+}</style>
+<script type="text/javascript">
+/*
+
+Default JavaScript for HTML output. _UNDER CONSTRUCTION - PLEASE DON'T TINKER YET_
+By Sune Foldager.
+
+*/
+
+function showElement(id)
+{
+   var b = document.getElementById(id + "_b");
+   var s = document.getElementById(id + "_s");
+   var h = document.getElementById(id + "_h");
+   b.style.display = "block";
+   s.style.display = "none";
+   h.style.display = "inline";
+}
+
+function hideElement(id)
+{
+   var b = document.getElementById(id + "_b");
+   var s = document.getElementById(id + "_s");
+   var h = document.getElementById(id + "_h");
+   b.style.display = "none";
+   s.style.display = "inline";
+   h.style.display = "none";
+}
+
+function clearElement(id)
+{
+	document.getElementById(id).innerHTML = ""
+}
+</script>
+<style type="text/css">
+	body {	
+		background-color: #eee;
+	}
+	.contents {	
+		background: white;
+		font-family: Verdena, sans-serif;
+		font-size: 13px;
+		border: 1px #888 solid;
+		padding: 0 1em;
+	}
+	</style>
+</head><body>
+<div class="contents">
+<h1>BeenVerifeid API Library</h1>
+
+	<p>http://beenverified.rubyforge.net/</p>
+
+
+<h2>VERSION 0.1.0</h2>
+
+<h2>DESCRIPTION:</h2>
+
+	<p>BeenVerified is a web service designed to build trust into the meetings
+and interactions that take place on websites and online communities. 
+Built using the OAuth protocol and with a focus on keeping the user in 
+complete control of their data, the BeenVerified API allows users to 
+present third-party, verified information about themselves within your 
+application. That verified user data (such as their identity and 
+credentials) can then be integrated directly into your application's 
+look and feel, providing a more trustworthy user experience for 
+everyone.</p>
+
+<h2>INSTALL:</h2>
+
+ <code>sudo gem install beenverified</code>
+
+<h2> FEATURES/PROBLEMS:</h2>
+
+	<ul>
+	<li>Wraps OAuth authentication</li>
+		<li>Wraps <span class="caps">XML</span> responses into a User object</li>
+		<li>User object has control of a hash of Credential objects</li>
+	</ul>
+	
+<h2>DEVELOPER KEY:</h2>
+
+	<p>Before you can access data from the BeenVerified Library, you must obtain a developer key at: 
+http://www.beenverified.com/developer/new?d=t</p>
+
+
+<h2> USAGE:</h2>
+
+	<p>Three Steps</p>
+
+<ol>
+ <li><strong>Obtaining a request token &#38; sending user to Auth[sz]</strong>
+
+ 	<pre><code> 
+  &gt;&gt; require 'beenverified'
+  &gt;&gt; client = BeenVerified::Client.new( :consumer_key    =&gt; "consumer_key",
+                                     :consumer_secret =&gt; "consumer_secret")               
+  &gt;&gt; request_token = client.get_request_token
+
+  #save your request_token data to your database
+  #send user to request_token.authorize_url  
+  #User comes back to app to notify of authorization 
+  #(in a web flow it would be a redirect to the callback <span class="caps">URL</span>)
+	</code></pre>
+	</li>
+	<li><strong>Getting the access token</strong>
+
+
+	<pre><code>
+  &gt;&gt; client = BeenVerified::Client.new( :consumer_key    =&gt; "consumer_key",
+                                    :consumer_secret =&gt; "consumer_secret",
+                                    :request_token        =&gt; "request_token",
+                                    :request_token_secret =&gt; "request_token_secret")
+  &gt;&gt; access_token = client.convert_to_access_token
+
+  #save access_token data to your database</code></pre>
+
+  </li>
+  <li><strong>Accessing BeenVerified Resources</strong>
+
+
+	<pre><code>
+  &gt;&gt; user = BeenVerified::Client.new( :consumer_key    =&gt; "consumer_key",
+                                    :consumer_secret =&gt; "consumer_secret",
+                                    :access_token        =&gt; "access_token",
+                                    :access_token_secret =&gt; "access_token_secret").user
+
+  =&gt; &lt;BeenVerified::User:0x02cf909 ...&gt;
+
+  #showing a users full name if they are sharing it
+  &gt;&gt; user.identity.full_name if user.identity
+  =&gt; "Jason Amster"
+  
+  #showing the name of the organization where a user worked
+  &gt;&gt; user.work_experiences[0].organization if user.work_experiences[0].size &gt; 0
+  =&gt; "BeenVerified"
+  
+  #showing the date the work_experience credential was verified
+  user.work_experiences[0].verified_on
+
+  #displaying the raw xml of a user
+  &gt;&gt; user.raw_xml
+  =&gt;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+  &lt;user&gt;
+      &lt;link_back&gt;http://localhost/personas/cb79d21f&lt;/link_back&gt;
+      &lt;credentials&gt;
+          ...
+      &lt;/credentials&gt;
+  &lt;/user&gt;
+	</code></pre>
+	</li>
+</ol>
+
+<h2>REQUIREMENTS:</h2>
+
+<ul>
+	<li>oauth</li>
+    <li>net/https</li>
+    <li>activesupport</li>
+</ul>
+<h2>SUPPORT:</h2>
+<strong>Please direct any questions or comments to the <a href="http://groups.google.com/group/beenverified-api">BeenVerified API Google Group</a>.</strong>  <br/><br/>
+
+Contact Info<br/>
+Jason Amster<br/>
+E: jayamster at gmail dot com<br/>
+AIM: bvjamster
+
+
+<p>If you want to submit any patches please read Dr. Nic's <a href="http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/">8 steps for fixing other people's code</a>.  For step 8, please utilize 8b or 8z (submit patch to google gropus, or email project owner jayamster at gmail dot com, respectively))
+</p>
+
+<h2>ACKNOWLEDGEMENTS:</h2>
+<p>Special thanks to the OAuth Group for coming up with the protocol and for those who wrote the OAuth Ruby Library which this library sits on top of.
+</p>
+<p>Also, thanks to Jesse Newland who wrote the FireEagle Ruby Library, which was used as an excellent template in building out this library.  
+</p>
+
+<h2>LICENSE:</h2>
+
+
+	<p>(The <span class="caps">MIT</span> License)</p>
+
+
+	<p>Copyright&#169; 2008 BeenVerified.</p>
+
+
+	<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+&#8216;Software&#8217;), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+
+	<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+
+	<p><span class="caps">THE SOFTWARE IS PROVIDED</span> &#8216;AS IS&#8217;, <span class="caps">WITHOUT WARRANTY OF ANY KIND</span>,
+<span class="caps">EXPRESS OR IMPLIED</span>, INCLUDING <span class="caps">BUT NOT LIMITED TO THE WARRANTIES OF</span>
+<span class="caps">MERCHANTABILITY</span>, FITNESS <span class="caps">FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT</span>.
+<span class="caps">IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY</span>
+<span class="caps">CLAIM</span>, DAMAGES <span class="caps">OR OTHER LIABILITY</span>, WHETHER <span class="caps">IN AN ACTION OF CONTRACT</span>,
+<span class="caps">TORT OR OTHERWISE</span>, ARISING <span class="caps">FROM</span>, OUT <span class="caps">OF OR IN CONNECTION WITH THE</span>
+<span class="caps">SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE</span>.</p>
+</div>
+</body></html>

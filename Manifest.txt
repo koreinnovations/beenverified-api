@@ -1,0 +1,15 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/beenverified
+lib/beenverified.rb
+lib/beenverified/client.rb
+lib/beenverified/credentials.rb
+lib/beenverified/response.rb
+lib/beenverified/user.rb
+test/test_beenverified.rb
+spec/simple_spec.rb
+test/test_beenverified.rb
+test/test_helper.rb
+test/test_user.rb
